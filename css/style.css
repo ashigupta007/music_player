@@ -85,6 +85,7 @@ html,body
 	overflow-x: hidden;
 	overflow-y: auto;
 }
+
 .container-custom
 {
 	height: 100%;
@@ -98,6 +99,53 @@ html,body
 	color: #5E5E5E;
 	letter-spacing: 1.5px;
 	margin-bottom: 30px;
+}
+.heading
+{
+	font-weight:bold;
+	font-size: 40px;
+	color: rgb(255, 255, 255);
+	letter-spacing: 1.5px;
+}
+.sub-heading
+{
+	font-weight:bold;
+	font-size: 25px;
+	color: rgb(255, 255, 255);
+	letter-spacing: 1.5px;
+
+}
+.banner
+{
+	background-image: linear-gradient(rgba(0 ,0,0,0.3),rgba(0,0,0,0.3)), url(../images/banner.jpeg);
+	background-size: cover;
+	background-color: rgba(0, 0, 0, .5);
+	height: 300px;
+	text-align: left;
+	padding: 50px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	border-radius: 10px;
+}
+.get-started
+{
+	background-color: transparent;
+	box-sizing: border-box;
+	border: 2px solid white;
+	border-radius: 15px;
+	text-align: center;
+	width: 20%;
+	font-weight: 700;
+	letter-spacing: 1px;
+	color: white;
+	padding: 5px;
+	font-size: 20px;
+}
+.get-started:hover
+{
+	background-color: white;
+	color: black;
 }
 .row
 {
