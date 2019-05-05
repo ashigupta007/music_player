@@ -89,17 +89,18 @@
 			<img src="images/1.jpg">
 		</div>
 
+		<audio id="player">
+			
+		</audio>
+
 		<div class="controller">
-			<audio autoplay>
-  				<source src="" type="audio/mp3">
-			</audio>
 
 			<button class="playlist"><i class="fas fa-list-ul"></i></button>
 
 			<button class="left arrow"><i class="fas fa-angle-left"></i></button>
 
-			<button class="play"><i class="fas fa-play"></i></button>
-			<!-- <i class="fas fa-pause"></i> -->
+			<button class="play_music"><i class="fas fa-play"></i></button>
+			<!-- <button class="toogler"><i class="fas fa-pause"></i></button> -->
 			<button class="right arrow"><i class="fas fa-angle-right"></i></button>
 
 			<button class="custom-close"><i class="fas fa-times"></i></button>
@@ -110,24 +111,50 @@
 <script type="text/javascript">
 	var player_is_open=0;
 	$('.player').hide();
+	
+
+
+	audio =new Audio();
+
+
 	$(document).on('click','.song', function(){
+
+		
+
+
 		if(player_is_open==1)
-		{
-			var source=$(this).children('img').attr('src');
-			$('.player_thumbnail img').attr('src', source);
+		{	
+
+			// var source=$(this).children('img').attr('src');
+			$('.player_thumbnail img').attr('src', $(this).data('cover-src'));
+			
+			audio.src= $(this).data("source");
+	        audio.load();
+	        audio.play();
 
 		}
 		else
 		{
 			$('.player').show();
-			var source=$(this).children('img').attr('src');
-			$('.player_thumbnail img').attr('src', source);
-
+			$('.player_thumbnail img').attr('src', $(this).data('cover-src'));
+			audio.src= $(this).data("source");
+	        // audio.pause();
+	        audio.load();
+	        audio.play();
+	        console.log($(this).data("source"));
 		}
 	})
 
+
+
+
+
+
+
+
 	$('.custom-close').click(function(){
 		$(this).parents('.player').hide();
+		audio.pause();
 	})
 
 
@@ -146,16 +173,16 @@
 		{
 			$.ajax({
 	                type: "POST",
-	                url: 'pages/send_emotion_based_data.php', 
+	                url: 'pages/api.php', 
 	                data: {
 	                    emotion_data : er,
+	                    action : "fetch_emotion_based_data",
 	                },
-	                success: function(data){
-	                	// run_recognition=0;
+	                success: function(result){
 	                	ctrack.stop();
 	                	vid.srcObject = null;
-	                 	$('.maincont').load('./pages/search_list.html');
-	                 	console.log(data);
+	                 	$('.maincont').load('./pages/search_list.html', music_data = result);
+	                 	
 	                }
 	            });
 		}
@@ -164,6 +191,10 @@
 			alert('Please First scan and then click on Fetch');
 	    }
     });
+
+
+    
+
 
 </script>
 </html>
