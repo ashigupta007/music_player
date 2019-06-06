@@ -33,7 +33,7 @@
 			<option value="NULL" selected>SONG TYPE</option>
 			<option value="sad">Sad</option>
 			<option value="happy">Happy</option>
-			<option value="surprized">Surprized</option>
+			<option value="surprised">Surprized</option>
 			<option value="angry">Angry</option>
 		</select><br><br>
 
@@ -60,7 +60,7 @@
         $song_url ="musics/".$music_id.".mp3";
         $upload_time = time();
 
-        require('connect.php');
+        require('./pages/connect.php');
 
         $add_song_query="INSERT INTO songs(song_id, song_name, artist, emotion_type, img_src, music_src, upload_time) VALUES('$music_id', '$song_name', '$artist_name', '$emotion_type', '$cover_url', '$song_url', '$upload_time')";
 		
@@ -76,7 +76,6 @@
         	echo "<h3>Not Added</h3>";
         }
 	}
-
 ?>
 </body>
 </html>

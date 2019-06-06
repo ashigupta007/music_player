@@ -9,6 +9,8 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <title>Platicon</title>
+
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <link rel="stylesheet" type="text/css" href="css/animate.css">
@@ -24,14 +26,25 @@
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 	
 	<link href="https://fonts.googleapis.com/css?family=Dancing+Script:700" rel="stylesheet">
+	
+	<link rel="manifest" href="./manifest.json">
 
+	<link rel="icon" type="image/png" href="./images/favicon-16x16.png" sizes="16x16">
+	
+	<link rel="icon" type="image/png" href="./images/favicon-32x32.png" sizes="32x32">
+
+	<link rel="icon" type="image/png" href="./images/android-192x192.png" sizes="192x192">
+	
+	<link rel="apple-touch-icon" href="./images/apple-touch-icon-180x180.png" sizes="180x180">
+
+	<meta name="theme-color" content="#EDEDED">
 
 </head>
 <body>
 
 	<!-- #34344a-#80475e-#cc5a71-#c89b7b-#f0f757 -->
 
-	<div class="navbar-left-custom col-sm-2">
+	<div class="navbar-left-custom">
 		<div class="header">
 			<div class="icon"> <i class="fas fa-play"></i></div> 
 			<div class="text">Platicon</div>
@@ -40,53 +53,53 @@
 		<div class="menu-holder">
 			<div class="menu">
 				<ul>
-					<a href="">
-						<li>
+						<li class="home">
 							<div class="icon"><i class="fas fa-home"></i></div>
 							<div class="text">Home</div>
 						</li>
-					</a>
-					<a href="">
-						<li>
-							<div class="icon"><i class="fas fa-list-ul"></i></div>
-							<div class="text">Playlist</div>
-						</li>
-					</a>
-
-					<a href="">
-						<li>
-							<div class="icon"><i class="fas fa-folder"></i></div>
-							<div class="text">Album</div>
-						</li>
-					</a>
-
-					<a href="#" class="songs">
 						<li>
 							<div class="icon"><i class="fas fa-music"></i></div>
 							<div class="text">Songs</div>
 						</li>
-					</a>
 
-					<a href="#" class="emotion_detection">
-						<li>
+					
+						<li class="emotion_detection">
 							<div class="icon"><i class="fas fa-camera"></i></div>
 							<div class="text">Emotion</div>
 						</li>
-					</a>
 				</ul>
 			</div>
 		</div>
 	</div>
+
+	<div class="navbar-bottom-custom">
+		<ul>
+			<li class="home">
+				<div class="icon"><i class="fas fa-home"></i></div>
+				<div class="text">Home</div>
+			</li>
+			<li>
+				<div class="icon"><i class="fas fa-music"></i></div>
+				<div class="text">Songs</div>
+			</li>
+
+		
+			<li class="emotion_detection">
+				<div class="icon"><i class="fas fa-camera"></i></div>
+				<div class="text">Emotion</div>
+			</li>
+		</ul>
+	</div>
 	
 
-	<div class="maincont col-sm-10">
+	<div class="maincont">
 		
 	</div>
 
 	<div class="player animated bounceInRight">
 
 		<div class="player_thumbnail">
-			<img src="images/1.jpg">
+			<img src="">
 		</div>
 
 		<audio id="player">
@@ -97,11 +110,11 @@
 
 			<button class="playlist"><i class="fas fa-list-ul"></i></button>
 
-			<button class="left arrow"><i class="fas fa-angle-left"></i></button>
+			<button class="left arrow prev"><i class="fas fa-angle-left"></i></button>
 
 			<button class="play_music"><i class="fas fa-play"></i></button>
 			<!-- <button class="toogler"><i class="fas fa-pause"></i></button> -->
-			<button class="right arrow"><i class="fas fa-angle-right"></i></button>
+			<button class="right arrow next"><i class="fas fa-angle-right"></i></button>
 
 			<button class="custom-close"><i class="fas fa-times"></i></button>
 		</div>
@@ -113,13 +126,30 @@
 	$('.player').hide();
 	
 
+    var nav_width= $('.navbar-left-custom').width();
+    var doc_width= $(document).width();
+    var main_view_width= doc_width - nav_width - 70;
+    $('.maincont').css("width" , main_view_width);
+
+    $(window).resize(function(){
+        var nav_width= $('.navbar-left-custom').width();
+	    var doc_width= $(document).width();
+	    var main_view_width= doc_width - nav_width - 70;
+    	$('.maincont').width(main_view_width);
+
+    	if(doc_width < 1000 )
+    	{
+    		$('.player').removeClass('bounceInRight');
+    		$('.player').addClass('bounceInUp');
+    	}
+    });	
+
+
+
+
 
 	audio =new Audio();
-
-
 	$(document).on('click','.song', function(){
-
-		
 
 
 		if(player_is_open==1)
@@ -143,12 +173,65 @@
 	        audio.play();
 	        console.log($(this).data("source"));
 		}
-	})
+	});
+	curr_song=0;
+	function varExists(el) { 
+  		if ( typeof el !== "undefined") { 
+		    return true; 
+		  } else { 
+		    return false; 
+		  } 
+		}
 
+	$('.next').click(function(){
+		if(varExists(data))
+		{
+			var playlist_len = data.length;
+			// console.log(playlist_len);
+			if(curr_song + 1 == playlist_len)
+			{
+				$('.player_thumbnail img').attr('src', data[0]['img_src']);
+				audio.src = data[0]['music_src'];
+				audio.load();
+	        	audio.play();
+	        	curr_song=0;
+			}
+			else
+			{
+				curr_song = curr_song + 1;
+				console.log(curr_song);
+				audio.src = data[curr_song]['music_src'];
+				$('.player_thumbnail img').attr('src', data[curr_song]['img_src']);
+				audio.load();
+	        	audio.play();
+			}
+		}
+	});
 
-
-
-
+	$('.prev').click(function(){
+		if(varExists(data))
+		{
+			var playlist_len = data.length;
+			// console.log(playlist_len);
+			if(curr_song == 0)
+			{
+	        	curr_song = playlist_len - 1;
+				console.log(curr_song);
+				audio.src = data[curr_song]['music_src'];
+				$('.player_thumbnail img').attr('src', data[curr_song]['img_src']);
+				audio.load();
+	        	audio.play();
+			}
+			else
+			{
+				curr_song= curr_song-1;
+				$('.player_thumbnail img').attr('src', data[curr_song]['img_src']);
+				audio.src = data[curr_song]['music_src'];
+				audio.load();
+	        	audio.play();
+			}
+		}
+	});
 
 
 
@@ -157,11 +240,34 @@
 		audio.pause();
 	})
 
+	$('.play_music').click(function(){
+		if($(this).hasClass('paused'))
+		{
+			audio.pause();
+			$(this).empty();
+			$(this).append('<i class="fas fa-pause"></i>');
+			$(this).removeClass('paused');
+		}
+		else
+		{
+			audio.play();
+			$(this).empty();
+			$(this).append('<i class="fas fa-play"></i>');
+			$(this).addClass('paused');
+		}
+		
+	});
+
+
 
 	$('.maincont').load('./pages/landing.html');
 
 	$('.emotion_detection').click(function(){
 		$('.maincont').load('./pages/examples/clm_emotiondetection.html');
+	});
+
+	$('.home').click(function(){
+		$('.maincont').load('./pages/landing.html');
 	});
 
 	$('.songs').click(function(){
@@ -173,7 +279,7 @@
 		{
 			$.ajax({
 	                type: "POST",
-	                url: 'pages/api.php', 
+	                url:'./pages/api.php', 
 	                data: {
 	                    emotion_data : er,
 	                    action : "fetch_emotion_based_data",
@@ -192,8 +298,22 @@
 	    }
     });
 
-
+	$(document).ready(function () {
+			$("#control_carousel").click(function () {
+				$(this).hide();
+			});
+			$("#control_carousel").click(function () {
+				$("#particles-js").css("visibility", "visible");
+			});
+		});
     
+
+		if('serviceWorker' in navigator) {
+		  navigator.serviceWorker.register('./sw.js')
+			.then(function() {
+				  console.log('Service Worker Registered');
+			});
+		}
 
 
 </script>

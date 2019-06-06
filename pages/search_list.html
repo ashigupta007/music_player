@@ -31,13 +31,13 @@
 	</div>
 </div>
 <script type="text/javascript">
-	var data = JSON.parse(music_data)
+	data = JSON.parse(music_data);
 	for(song in data)
 	{
 		$('.items-list').append(`
-			<div class="item col-sm-8 song" data-source="${data[song]['music_src']}" data-cover-src= "${data[song]['img_src']}">
+			<div class="item col-sm-8 song" data-source="./${data[song]['music_src']}" data-cover-src= "./${data[song]['img_src']}">
 			<div class="col-sm-2 thumbnail-sml">
-				<img src="${data[song]['img_src']}">
+				<img src="./${data[song]['img_src']}">
 			</div>
 			
 			<div class="col-sm-8">
@@ -54,7 +54,10 @@
 			</div>
 		</div>
 			`);
+		
 	}
 
-	console.log(data);
+
+
+	// console.log(data);
 </script>
