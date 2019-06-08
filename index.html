@@ -57,7 +57,7 @@
 							<div class="icon"><i class="fas fa-home"></i></div>
 							<div class="text">Home</div>
 						</li>
-						<li>
+						<li class="songs">
 							<div class="icon"><i class="fas fa-music"></i></div>
 							<div class="text">Songs</div>
 						</li>
@@ -78,7 +78,7 @@
 				<div class="icon"><i class="fas fa-home"></i></div>
 				<div class="text">Home</div>
 			</li>
-			<li>
+			<li class="songs">
 				<div class="icon"><i class="fas fa-music"></i></div>
 				<div class="text">Songs</div>
 			</li>
@@ -271,7 +271,23 @@
 	});
 
 	$('.songs').click(function(){
-		$('.maincont').load('./pages/search_list.html');
+
+
+		$.ajax({
+	                type: "POST",
+	                url:'./pages/api.php', 
+	                data: {
+	                    action : "fetch_all_song_list",
+	                },
+	                success: function(result){
+						$('.maincont').load('./pages/fetch_all_song.html', music_data = result);
+	                 	
+	                }
+	            });
+
+
+
+		
 	});
 
 	$(document).on('click','.send_data', function(){
@@ -309,7 +325,7 @@
     
 
 		if('serviceWorker' in navigator) {
-		  navigator.serviceWorker.register('./sw.js')
+		  navigator.serviceWorker.register('sw.js')
 			.then(function() {
 				  console.log('Service Worker Registered');
 			});

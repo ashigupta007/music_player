@@ -52,5 +52,23 @@
 		}
 	}
 
+	else if(isset($_POST['action']) && $_POST['action'] == "fetch_all_song_list")
+	{
+		$fetch_song = "SELECT * FROM songs ORDER BY upload_time DESC LIMIT 40";
 
+		require('connect.php');
+
+		if($result=mysqli_query($conn, $fetch_song))
+		{
+			$count =  mysqli_num_rows($result);
+            if($count>0)
+            {
+            	while($row = mysqli_fetch_assoc($result))
+            	{
+            		$data_fetched[]= $row;
+            	}
+            }
+            print json_encode($data_fetched);
+		}
+	}
 ?>
